@@ -1,14 +1,52 @@
 <head>
-  <title>Not so simple though</title>
+  <title>Todo List</title>
 </head>
-
+ 
 <body>
-  <h1>Testing grounds</h1>
-
-  {{> hello}}
+  <div class="container">
+    {{#if currentUser}}
+    <header>
+      <h1>Tasks ({{numberOfActiveTasks}})</h1>
+    </header>
+    
+    <label class="hide-completed">
+      <input type="checkbox" checked="{{activeOnly}}" />
+      Active only
+    </label>
+    {{/if}}
+      
+    {{> loginButtons}}
+    
+    {{#if currentUser}}
+    <form class="new-task">
+        <input type="text" name="text" placeholder="Type to add new tasks" />
+    </form>
+    
+    <ul>
+      {{#each tasks}}
+        {{> task}}
+      {{/each}}
+    </ul>
+    {{/if}}
+    
+  </div>
 </body>
-
-<template name="hello">
-  <button>Click Me</button>
-  <p>You've pressed the button {{counter}} times.</p>
+ 
+<template name="task">
+  <li class="{{#if checked}}checked{{/if}} {{#if private}}private{{/if}}">
+    <button class="delete">&times;</button>
+    <input type="checkbox" checked="{{checked}}" class="toggle-checked"/>
+    
+    {{#if isOwner}}
+      <button class="toggle-private">
+        {{#if private}}
+          Private
+        {{else}}
+          Public
+        {{/if}}
+      </button>
+    {{/if}}
+    
+    <span class="text"><strong>{{username}}</strong> - {{text}}</span>
+  </li>
 </template>
